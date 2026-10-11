@@ -1,0 +1,46 @@
+
+name: MealConnect CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-validate:
+    name: Build and Validate MealConnect
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install frontend dependencies
+        working-directory: food-delivery-app
+        run: npm ci
+
+      - name: Build React frontend
+        working-directory: food-delivery-app
+        run: npm run build
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Validate backend JavaScript
+        working-directory: backend
+        run: node --check server.js
+
+      - name: Build Docker images
+        run: docker compose build
