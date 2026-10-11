@@ -18,13 +18,18 @@ pipeline {
             }
         }
 
+        
         stage('Check Docker') {
             steps {
-                sh 'docker --version'
-                sh 'docker compose version'
-                sh 'docker info'
+                sh '''
+                    export PATH="/Applications/Docker.app/Contents/Resources/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+                    docker --version
+                    docker compose version
+                    docker info
+                '''
             }
         }
+
 
         stage('Validate Compose') {
             steps {
