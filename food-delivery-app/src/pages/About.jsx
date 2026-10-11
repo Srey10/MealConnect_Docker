@@ -82,7 +82,7 @@ export default function About() {
         <div className="section-container">
           <div className="story-grid">
             <div className="story-content">
-              <h2 className="section-title">Our Story</h2>
+              <h2 className="section-title">About Our Story</h2>
               <p className="story-text">
                 MealConnect was born in 2018 when our founder, Asha Verma, witnessed the stark contrast between food waste in restaurants and hunger in nearby communities. What started as a weekend initiative with five volunteers has grown into a nationwide movement.
               </p>
