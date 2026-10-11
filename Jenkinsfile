@@ -1,0 +1,62 @@
+
+pipeline {
+    agent any
+
+    triggers {
+        pollSCM('H/2 * * * *')
+    }
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Check Docker') {
+            steps {
+                sh 'docker --version'
+                sh 'docker compose version'
+                sh 'docker info'
+            }
+        }
+
+        stage('Validate Compose') {
+            steps {
+                sh 'docker compose config -q'
+            }
+        }
+
+        stage('Build Images') {
+            steps {
+                sh 'docker compose build'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'docker compose up -d --remove-orphans'
+            }
+        }
+
+        stage('Verify') {
+            steps {
+                sh 'docker compose ps'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'MealConnect deployment completed.'
+        }
+        failure {
+            echo 'Deployment failed. Check Console Output.'
+        }
+    }
+}
