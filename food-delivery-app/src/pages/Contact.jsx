@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, MessageSquare, CheckCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+//import { Link } from 'react-router-dom';
 import '../styles/Contact.css';
 
 export default function Contact() {

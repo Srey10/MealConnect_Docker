@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import {
-  Users, Store, Package, ShoppingCart, Handshake, IndianRupee,
-  TrendingUp, Clock, CheckCircle, XCircle, Edit, Trash2, Eye,
+  Users, Store, Package, ShoppingCart, Handshake, IndianRupee, Clock, CheckCircle, Trash2, Eye,
   RefreshCw, LogOut, BarChart3, Building2, FileText, Briefcase,
   Mail, Phone, MapPin, Calendar, User, CreditCard,
   IndianRupeeIcon, Shield

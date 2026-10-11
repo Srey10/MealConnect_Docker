@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Search, User, Heart, Users, Target, Award, TrendingUp } from 'lucide-react';
+import { ShoppingCart, Search, User, Heart, Users, Target, Award } from 'lucide-react';
 import '../styles/About.css';
 
 export default function About() {

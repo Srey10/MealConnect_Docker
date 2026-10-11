@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingCart, Search, User, Heart, CreditCard, Smartphone, Building2, CheckCircle, DollarSign } from 'lucide-react';
+//import { Link } from 'react-router-dom';
+import { Heart, CreditCard, Smartphone, Building2, CheckCircle} from 'lucide-react';
 import '../styles/Donate.css';
 
 export default function Donate() {

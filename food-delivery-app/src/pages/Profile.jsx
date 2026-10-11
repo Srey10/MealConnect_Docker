@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import {
   User, Mail, Edit2, Save, X, Lock, ShoppingBag, Package,
-  Store, IndianRupeeIcon, Clock, CheckCircle, XCircle, LogOut,
-  MapPin, Phone, TrendingUp,
+  Store,  Clock, CheckCircle, XCircle, LogOut,
+  MapPin, Phone,
   IndianRupee
 } from 'lucide-react';
 import api from '../api';

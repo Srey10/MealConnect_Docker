@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Search, User, MapPin, Phone, Mail, CheckCircle, Building, Utensils } from 'lucide-react';
+import { ShoppingCart, Search, User, MapPin, Phone, CheckCircle, Building, Utensils } from 'lucide-react';
 import api from '../api';
 import '../styles/Partners.css';
 

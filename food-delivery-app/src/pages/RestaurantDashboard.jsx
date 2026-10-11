@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import { Plus, Edit2, Trash2, Save, X, Upload, Store, Package, Clock, Image as ImageIcon, CheckCircle, XCircle, Bell, LogOut, Shield } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X, Upload, Store, Package, Clock, CheckCircle, XCircle, Bell, LogOut, Shield } from 'lucide-react';
 import api from '../api';
 import '../styles/RestaurantDashboard.css';
 import '../styles/DashboardLayout.css';
@@ -35,54 +35,58 @@ export default function RestaurantDashboard() {
 
   const categories = ['Main Course', 'Rice', 'Bread', 'Dessert', 'Snacks', 'Beverages', 'Side Dish'];
 
-  useEffect(() => {
-    if (!user || user.role !== 'restaurant') {
-      navigate('/login');
-      return;
-    }
-    loadData();
-  }, [user, navigate]);
+  const loadData = useCallback(async () => {
+  try {
+    setLoading(true);
 
-  const loadData = async () => {
+    let currentRestaurant = null;
+
     try {
-      setLoading(true);
-      let currentRestaurant = restaurant;
-      
-      // Try to get restaurant, if not found, show form
-      try {
-        const res = await api.get('/restaurants/my-restaurant');
-        currentRestaurant = res.data;
-        setRestaurant(currentRestaurant);
-      } catch (err) {
-        if (err.response?.status === 404) {
-          setShowRestaurantForm(true);
-          currentRestaurant = null;
-        }
+      const res = await api.get('/restaurants/my-restaurant');
+      currentRestaurant = res.data;
+      setRestaurant(currentRestaurant);
+      setShowRestaurantForm(false);
+    } catch (err) {
+      if (err.response?.status === 404) {
+        setRestaurant(null);
+        setShowRestaurantForm(true);
+      } else {
+        console.error('Error loading restaurant:', err);
       }
-
-      // Load menu items and pickup requests only if restaurant exists
-      if (currentRestaurant) {
-        try {
-          const itemsRes = await api.get('/menu-items/my-items');
-          setMenuItems(itemsRes.data);
-        } catch (err) {
-          console.error('Error loading menu items:', err);
-        }
-
-        // Load pickup requests
-        try {
-          const pickupsRes = await api.get('/pickups/my-restaurant');
-          setPickupRequests(pickupsRes.data || []);
-        } catch (err) {
-          console.error('Error loading pickup requests:', err);
-        }
-      }
-    } catch (error) {
-      console.error('Error loading data:', error);
-    } finally {
-      setLoading(false);
     }
-  };
+
+    if (currentRestaurant) {
+      try {
+        const itemsRes = await api.get('/menu-items/my-items');
+        setMenuItems(itemsRes.data);
+      } catch (err) {
+        console.error('Error loading menu items:', err);
+      }
+
+      try {
+        const pickupsRes = await api.get('/pickups/my-restaurant');
+        setPickupRequests(pickupsRes.data || []);
+      } catch (err) {
+        console.error('Error loading pickup requests:', err);
+      }
+    } else {
+      setMenuItems([]);
+      setPickupRequests([]);
+    }
+  } catch (error) {
+    console.error('Error loading data:', error);
+  } finally {
+    setLoading(false);
+  }
+}, []);
+useEffect(() => {
+  if (!user || user.role !== 'restaurant') {
+    navigate('/login');
+    return;
+  }
+
+  loadData();
+}, [user, navigate, loadData]);
 
   const handleRestaurantSubmit = async (e) => {
     e.preventDefault();

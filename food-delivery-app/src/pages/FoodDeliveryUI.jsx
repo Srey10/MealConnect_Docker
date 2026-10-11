@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ShoppingCart, User, Star, Package, Clock, MapPin, Plus, Minus, Menu as MenuIcon, X } from 'lucide-react';
+import { ShoppingCart, Star, Package, Clock, MapPin, Plus, Minus, Menu as MenuIcon, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import '../styles/FoodDeliveryUI.css';
 import '../styles/Menu.css';
