@@ -6,6 +6,10 @@ pipeline {
         pollSCM('H/2 * * * *')
     }
 
+    environment {
+        PATH = "/Applications/Docker.app/Contents/Resources/bin:/opt/homebrew/bin:/usr/local/bin:${env.PATH}"
+    }
+
     options {
         timestamps()
         disableConcurrentBuilds()
