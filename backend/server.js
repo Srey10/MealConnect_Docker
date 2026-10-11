@@ -20,14 +20,23 @@ dotenv.config();
 
 const app = express();
 
+// Body parsing middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(morgan('dev'));
+
 // Database
 connectDB();
 
 const allowedOrigins = [
   'http://localhost:3000',
+  'http://localhost',
+  'http://localhost:80',
+  process.env.FRONTEND_URL,
   'https://mealconnect-ngo.onrender.com',
   'https://mealconnect-ngoconnect.onrender.com'
-];
+].filter(Boolean);
 
 // Apply CORS to all routes
 app.use(cors({

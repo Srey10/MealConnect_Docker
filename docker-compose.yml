@@ -1,0 +1,69 @@
+name: mealconnect
+
+services:
+  # MongoDB Database
+  mongo:
+    image: mongo:7
+    container_name: mealconnect-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: mealconnect
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mealconnect-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Backend API Server
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mealconnect-backend
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - MONGO_URI=mongodb://mongo:27017/mealconnect
+      - MONGO_DB=mealconnect
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET:-devsecret}
+      - FRONTEND_URL=http://localhost
+    volumes:
+      - backend-uploads:/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - mealconnect-network
+
+  # Frontend React Application
+  frontend:
+    build:
+      context: ./food-delivery-app
+      dockerfile: Dockerfile
+    container_name: mealconnect-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - mealconnect-network
+
+volumes:
+  mongo-data:
+    driver: local
+  backend-uploads:
+    driver: local
+
+networks:
+  mealconnect-network:
+    driver: bridge
