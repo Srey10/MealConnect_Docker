@@ -1,4 +1,4 @@
-// Testing Jenkins automatic deployment
+// Testing Jenkins automatic deployment.
 pipeline {
     agent any
 
